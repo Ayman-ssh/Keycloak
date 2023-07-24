@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+        # Conteneur base de données PostgreSQL
+        postgres:
+                image: postgres:latest
+                container_name: postgres_db
+                secrets:
+                        - postgres-pwd
+                env_file:
+                        - ~/Keycloak/env_files/postgres.env.example
+                ports:
+                        - 5432:5432
+                volumes:
+                        - pg_data:/var/lib/postgresql/data
+
+        keycloak:
+                build: ~/Keycloak/
+                container_name: keycloak_app
+                secrets:
+                        - db-password
+                        - keycloak-adm
+                env_file:
+                        - ~/Keycloak/env_files/keycloak.env.example
+                ports:
+                        - 80:80
+                depends_on:
+                        - postgres
+                volumes:
+                        - keycloak_data:/opt/
+
+volumes:
+        pg_data: # Volume pour stocker les données de PostgreSQL
+        keycloak_data:
+
+secrets:
+        postgres-pwd:
+                file: ~/Keycloak/mdp_files/postgres-pwd.secret.example
+        db-password:
+                file: ~/Keycloak/mdp_files/db-password.secret.example
+        keycloak-adm:
+                file: ~/Keycloak/mdp_files/keycloak-adm.secret.example
