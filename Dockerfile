@@ -5,7 +5,7 @@ FROM ubuntu:latest
 RUN apt-get update && apt-get upgrade -y
 
 # Installe les dépendances nécessaires (curl, tar, et autres outils requis)
-RUN apt-get install -y --no-install-recommends wget ca-certificates openjdk-17-jre && \
+RUN apt-get install -y  wget ca-certificates openjdk-17-jre && \
     rm -rf /var/lib/apt/lists/*
 
 # Télécharge la dernière version de Keycloak depuis le site officiel

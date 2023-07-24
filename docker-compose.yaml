@@ -12,6 +12,8 @@ services:
                         - 5432:5432
                 volumes:
                         - pg_data:/var/lib/postgresql/data
+                networks:
+                        - keycloak-net
 
         keycloak:
                 build: ~/Keycloak/
@@ -25,12 +27,14 @@ services:
                         - 80:80
                 depends_on:
                         - postgres
-                volumes:
-                        - keycloak_data:/opt/
+                networks:
+                        - keycloak-net
 
 volumes:
         pg_data: # Volume pour stocker les données de PostgreSQL
-        keycloak_data:
+
+networks:
+        keycloak-net:
 
 secrets:
         postgres-pwd:
